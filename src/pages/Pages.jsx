@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex } from '@chakra-ui/layout';
 import { useColorModeValue, chakra,  } from '@chakra-ui/react';
 import { Box, Stack, Heading } from '@chakra-ui/layout';
-import { Button, IconButton } from '@chakra-ui/button';
+import { Button } from '@chakra-ui/button';
 import { FaGithub } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 export const HomePage = () => {
@@ -19,7 +19,7 @@ export const HomePage = () => {
             <Flex alignItems="center" justifyContent="space-between">
               <Box fontSize="xl" fontWeight="semibold" color="gray.700">
                 <chakra.a
-                  fontSize={['xl', , '2xl']}
+                  fontSize={['xl', '2xl']}
                   fontWeight="bold"
                   textTransform="uppercase"
                   color={useColorModeValue('gray.800', 'white')}
@@ -35,7 +35,7 @@ export const HomePage = () => {
               <chakra.a
                 display="block"
                 mx={4}
-                mt={[2, , 0]}
+                mt={[2, 0]}
                 fontSize="sm"
                 color={useColorModeValue('gray.700', 'gray.200')}
                 textTransform="capitalize"
@@ -47,7 +47,7 @@ export const HomePage = () => {
               </Flex>
             </Flex>
 
-            <Box display={['none', , 'flex']} alignItems={{ md: 'center' }}>
+            <Box display={['none', 'flex']} alignItems={{ md: 'center' }}>
               
               <chakra.a
                 display="block"
@@ -83,7 +83,7 @@ export const HomePage = () => {
         >
           <Stack textAlign="center" alignItems="center" spacing={6}>
             <Heading
-              fontSize={['2xl', , '3xl']}
+              fontSize={['2xl', '3xl']}
               fontWeight="semibold"
               color="white"
               textTransform="uppercase"
@@ -93,7 +93,7 @@ export const HomePage = () => {
 
             <chakra.p>
               <Button colorScheme="green">
-              <Link to="/splashy/photos" >Get Started</Link>
+              <Link to="/splashy/photos">Get Started</Link>
               </Button>
             </chakra.p>
            

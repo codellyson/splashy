@@ -6,7 +6,6 @@ import { DownloadIcon } from '@chakra-ui/icons';
 import { Link } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { Icon } from '@chakra-ui/icon';
-import { useRouteMatch } from 'react-router';
 import "../../utils/httpClient"
 function ImageCard({ data }) {
  

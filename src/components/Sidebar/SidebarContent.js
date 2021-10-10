@@ -2,7 +2,7 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 import {FaUser, } from 'react-icons/fa';
 import {  HiCollection } from 'react-icons/hi';
 import { MdHome} from 'react-icons/md';
-import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Box, Flex } from '@chakra-ui/layout';
 import NavItem from '../Navs/NavItem';
 import { Link, NavLink, useRouteMatch } from 'react-router-dom';
 

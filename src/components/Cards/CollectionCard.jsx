@@ -1,14 +1,12 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/layout';
-import { useColorModeValue, chakra, useDisclosure } from '@chakra-ui/react';
-import { Image } from '@chakra-ui/image';
-import { Icon } from '@chakra-ui/icon';
+import { useColorModeValue, chakra } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/layout';
 import { Avatar } from '@chakra-ui/avatar';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import { useRouteMatch } from 'react-router';
 function CollectionCard({ collection }) {
-  const { url, path } = useRouteMatch();
+  const { url } = useRouteMatch();
   return (
     <Flex
       bg={useColorModeValue('#F9FAFB', 'gray.600')}

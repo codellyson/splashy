@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import axios from 'axios';
 import { Flex, Box, Link } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
-import { useColorModeValue, chakra, useDisclosure } from '@chakra-ui/react';
-import { useParams } from 'react-router';
-import { AiOutlinePicture } from 'react-icons/ai';
+import { useColorModeValue, chakra,  } from '@chakra-ui/react';
+
 import { Button, IconButton } from '@chakra-ui/button';
 import '../utils/httpClient';
-import CollectionPhotoCard from '../components/Cards/CollectionPhotoCard';
 import ImageCard from '../components/Cards/ImageCard';
 import "moment"
 import Moment from "react-moment"
