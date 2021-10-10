@@ -16,7 +16,7 @@ import { useRouteMatch } from 'react-router';
 export default function UserCard({user}) {
  const {path} = useRouteMatch()
   return (
-    <Center py={6} px={3}>
+    <Center py={6}>
       <Box
         maxW={'270px'}
         w={'full'}
