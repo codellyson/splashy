@@ -24,7 +24,7 @@ function ImageCard({ data }) {
           h={56}
           fit="cover"
           objectPosition="center"
-          src={data.urls.full}
+          src={data.urls.regular}
           alt="avatar"
         />
 

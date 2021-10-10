@@ -9,13 +9,14 @@ import {
   Stack,
   Button,
   useColorModeValue,
+  Link
 } from '@chakra-ui/react';
 import { useRouteMatch } from 'react-router';
 
 export default function UserCard({user}) {
  const {path} = useRouteMatch()
   return (
-    <Center py={6}>
+    <Center py={6} px={3}>
       <Box
         maxW={'270px'}
         w={'full'}
@@ -48,8 +49,11 @@ export default function UserCard({user}) {
           <Stack spacing={0} align={'center'} mb={5}>
             <Heading fontSize={'xl'} textAlign="center"fontWeight={500} fontFamily={'body'}>
               {`${user.first_name === null?"":user.first_name} ${user.last_name === null?"":user.last_name}`}
-            </Heading>
-            <Text as="a" href={user.portfolio_url} textAlign="center" color={'gray.500'}>{user.portfolio_url===null?"":user.portfolio_url}</Text>
+            </Heading> 
+            <Text as="p"  textAlign="center" display="block" color={'gray.500'} px="3">
+            <Link href={user.portfolio_url}>{user.portfolio_url===null?"":user.portfolio_url}</Link>
+            </Text>
+            
           </Stack>
 
           <Stack direction={'row'} justify={'center'} spacing={6}>
