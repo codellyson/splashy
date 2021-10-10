@@ -10,7 +10,6 @@ import Icon from '@chakra-ui/icon';
 import { useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { Route, useRouteMatch } from 'react-router';
 import CollectionPreview from '../pages/CollectionPreview';
-import PhotoPreview from '../pages/PhotoPreview';
 import PhotoPage from '../pages/PhotoPage';
 import CollectionPage from '../pages/CollectionPage';
 import UserPage from '../pages/UserPage';
@@ -83,7 +82,6 @@ function Main() {
             path={`${path}/collections/:id`}
           />
           <Route component={PhotoPage} path={`${path}/photos`} exact />
-          <Route component={PhotoPreview} path={`${path}/photos/:id`} />
           <Route component={UserPage} path={`${path}/users`} exact />
           <Route component={UserPreview} path={`${path}/users/:username`} />
         </Box>

@@ -16,9 +16,11 @@ import {
   Flex,
   IconButton,
 } from '@chakra-ui/react';
+import { AlertDialog } from '@chakra-ui/modal';
 import ImageCard from '../components/Cards/ImageCard';
 import { useParams } from 'react-router';
 import { FaInstagram, FaPaypal, FaTwitter } from 'react-icons/fa';
+import AlertNotification from '../components/Cards/AlertNotification';
 
 const SocialButton = ({ children, label, href }) => {
   return (
@@ -50,31 +52,61 @@ function UserPreview() {
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const [ErrorMessage, setErrorMessage] = useState('');
   useEffect(() => {
     if (!user.length) {
       axios
         .get(`/users/${username}`)
         .then(response => setUser(response.data))
-        .catch(err => alert(err.response.data));
+        .catch(error => {
+          if (error.response) {
+            setIsOpen(true);
+            setErrorMessage(error.response.data.errors);
+            setLoading(false);
+          } else if (error.request.status === 0) {
+            setIsOpen(true);
+            setErrorMessage('Network Error');
+            setLoading(false);
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000);
+          }
+        });
     }
   }, [username]);
-  useEffect(() => {setLoading(true);
-   
-      
-      axios
-        .get(`/users/${username}/photos?page=${page}`)
-        .then(response => {
-          setUserPhotos(response.data);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/users/${username}/photos?page=${page}`)
+      .then(response => {
+        setUserPhotos(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        if (error.response) {
+          setIsOpen(true);
+          setErrorMessage(error.response.data.errors);
           setLoading(false);
-        })
-        .catch(err => {
-          alert(err.response.data);
+        } else if (error.request.status === 0) {
+          setIsOpen(true);
+          setErrorMessage('Network Error');
           setLoading(false);
-        });
-    
-  }, [ page]);
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        }
+      });
+  }, [page]);
   return (
     <div>
+      <AlertNotification
+        errorMessage={ErrorMessage}
+        alertHeader="Notification"
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       <Center py={6}>
         {!user ? (
           <h1>Loading User details, please wait...</h1>

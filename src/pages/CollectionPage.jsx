@@ -4,10 +4,14 @@ import '../utils/httpClient';
 import CollectionCard from '../components/Cards/CollectionCard';
 import { Box, Flex, Stack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
+import AlertNotification from '../components/Cards/AlertNotification';
 const CollectionPage = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const [ErrorMessage, setErrorMessage] = useState('');
   useEffect(() => {
     setLoading(true);
     axios
@@ -16,14 +20,31 @@ const CollectionPage = () => {
         setCollections(response.data);
         setLoading(false);
       })
-      .catch(err => {
-        alert(err.response.data);
-        setLoading(false);
+      .catch(error => {
+        if (error.response) {
+          setIsOpen(true);
+          setErrorMessage(error.response.data.errors);
+          setLoading(false);
+        } else if (error.request.status === 0) {
+          setIsOpen(true);
+          setErrorMessage('Network Error');
+          setLoading(false);
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        }
       });
   }, [page]);
 
   return (
     <div>
+      {' '}
+      <AlertNotification
+        errorMessage={ErrorMessage}
+        alertHeader="Notification"
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       <Flex
         direction="row"
         justifyContent="center"

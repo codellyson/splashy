@@ -1,46 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import axios from 'axios';
-import { Flex, Box, Link } from '@chakra-ui/layout';
+import { Flex, Box, Stack, Link } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/image';
-import { useColorModeValue, chakra,  } from '@chakra-ui/react';
-
+import { useColorModeValue, chakra } from '@chakra-ui/react';
 import { Button, IconButton } from '@chakra-ui/button';
 import '../utils/httpClient';
 import ImageCard from '../components/Cards/ImageCard';
-import "moment"
-import Moment from "react-moment"
+import 'moment';
+import Moment from 'react-moment';
+import AlertNotification from '../components/Cards/AlertNotification';
 function CollectionPreview() {
   const [collection, setCollection] = useState({});
   const [collectionPhotos, setCollectionPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  let [page, setPage] = useState(1);
   const { id } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const [ErrorMessage, setErrorMessage] = useState('');
   useEffect(() => {
     if (!collection.length) {
+      setLoading(true);
       axios
         .get(`/collections/${id}`)
-        .then(response => setCollection(response.data))
-        .catch(error => alert(error.response.data));
+        .then(response => {
+          setCollection(response.data);
+          setLoading(false);
+        })
+        .catch(error => {
+          alert(error);
+          setLoading(false);
+        });
     } else {
       return false;
     }
   }, [id]);
 
   useEffect(() => {
-    if (!collectionPhotos.length) {
-      axios
-        .get(`/collections/${id}/photos`)
-        .then(response => setCollectionPhotos(response.data))
-        .catch(error => alert(error.response.data));
-    } else {
-      return false;
-    }
-  }, [id]);
+    setLoading(true);
+    // if (!collectionPhotos.length) {
+    axios
+      .get(`/collections/${id}/photos?page=${page}`)
+      .then(response => {
+        setCollectionPhotos(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        setLoading(false);
+        if (error.response) {
+          setIsOpen(true);
+          setErrorMessage(error.response.data.errors);
+          setLoading(false);
+        } else if (error.request.status === 0) {
+          setIsOpen(true);
+          setErrorMessage('Network Error');
+          setLoading(false);
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        }
+      });
+    // } else {
+    //   return false;
+    // }
+  }, [id, page]);
   return (
     <div>
+      <AlertNotification
+        errorMessage={ErrorMessage}
+        alertHeader="Notification"
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       <Flex
         bg={useColorModeValue('#F9FAFB', 'gray.600')}
         p={50}
-       W="600px"
+        W="600px"
         alignItems="center"
         justifyContent="center"
       >
@@ -128,12 +164,14 @@ function CollectionPreview() {
                   </Link>
                 </Flex>
 
-                <Button colorScheme="gray" as="span"
+                <Button
+                  colorScheme="gray"
+                  as="span"
                   mx={1}
                   fontSize="sm"
                   color={useColorModeValue('gray.600', 'gray.300')}
                 >
-                 <Moment format="DD/MM/YYYY" date= {collection?.published_at}/>
+                  <Moment format="DD/MM/YYYY" date={collection?.published_at} />
                 </Button>
               </Flex>
             </Box>
@@ -148,12 +186,36 @@ function CollectionPreview() {
         </chakra.h1>
         {!collectionPhotos.length ? (
           <h1>Loading photos ...</h1>
+        ) : loading ? (
+          <Box height="50vh">Loading collections photos please wait...</Box>
         ) : (
-          <Flex wrap="wrap" justifyContent="center" alignItems="center">
-            {collectionPhotos.map(photo => (
-              <ImageCard data={photo} key={photo.id} />
-            ))}
-          </Flex>
+          <div>
+            <Flex wrap="wrap" justifyContent="center" alignItems="center">
+              {collectionPhotos.map(photo => (
+                <ImageCard data={photo} key={photo.id} />
+              ))}
+            </Flex>
+            <Flex justifyContent="center">
+              <Stack direction="row" spacing={4} align="center">
+                <Button
+                  isLoading={loading}
+                  colorScheme="teal"
+                  variant="outline"
+                  onClick={() => setPage(page > 0 ? page - 1 : page)}
+                >
+                  Previous
+                </Button>
+                <Button
+                  isLoading={loading}
+                  colorScheme="teal"
+                  variant="outline"
+                  onClick={() => setPage(page + 1)}
+                >
+                  Next
+                </Button>
+              </Stack>
+            </Flex>
+          </div>
         )}
       </Flex>
     </div>
